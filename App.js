@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import CondRendering from "./src/Components/CondRendering";
 import Mapping from "./src/Components/Mapping";
 import LoginClassBased from "./src/Components/LoginClassBased";
@@ -7,11 +7,10 @@ import Header from "./src/Components/Header";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router";
 import Body from "./src/Components/Body";
-import About from "./src/Components/About";
+//import About from "./src/Components/About";
 import Products from "./src/Components/Products";
 import Contact from "./src/Components/Contact";
 import "./index.css";
-import { StrictMode } from "react";
 
 const App = () => {
   return (
@@ -26,6 +25,8 @@ const App = () => {
   );
 };
 
+const About = lazy(() => import("./src/Components/About"));
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -37,7 +38,11 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/about",
-        element: <About />,
+        element: (
+          <Suspense fallback={<h1>loading....</h1>}>
+            <About />
+          </Suspense>
+        ),
       },
       {
         path: "/products",
@@ -53,7 +58,7 @@ const appRouter = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <StrictMode>
-    <RouterProvider router={appRouter} />
-  </StrictMode>
+  //   <StrictMode>
+  <RouterProvider router={appRouter} />
+  // </StrictMode>
 );

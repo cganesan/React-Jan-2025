@@ -2,42 +2,54 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 const ImageGen = () => {
-  const[item, setItem] = useState();
-  const [imgs, setImgs]= useState();
+  const [item, setItem] = useState();
+  const [imgs, setImgs] = useState();
   const [imgName, setImgName] = useState();
 
-  console.log("one")
+  // console.log("one");
 
+  useEffect(() => {
+    //console.log("useeffct");
+    fetchData();
+  }, []);
 
+  const fetchData = async () => {
+    const images = await fetch("https://api.imgflip.com/get_memes");
+    const datass = await images.json();
+    //  console.log("newjson", datass);
+    setItem(datass.data.memes);
+  };
 
-  useEffect(()=>{
-    console.log('useeffct')
-  fetchData();
-  },[])
-  
-const fetchData = async ()=>{
- const images = await fetch('https://api.imgflip.com/get_memes');
- const datass = await images.json();
- console.log('newjson', datass);
- setItem(datass.data.memes)
-}
+  useEffect(() => {
+    console.log("useeffct22");
+    const runTimer = setInterval(() => {
+      console.log("timer running");
+    }, 1000);
+    return () => {
+      console.log("useeffect return");
+      clearInterval(runTimer);
+    };
+  }, []);
 
+  // runTimer = () => {
+  //   setInterval(() => {
+  //     console.log("timer running");
+  //   }, 1000);
+  // };
 
+  const handleImage = () => {
+    const randomNumber = Math.floor(Math.random() * item.length);
+    const imageName = item[randomNumber].name;
+    //console.log('imageName', imageName)
+    const imageUrl = item[randomNumber].url;
+    //  console.log('imageUrl', imageUrl)
+    setImgs(imageUrl);
+    setImgName(imageName);
+  };
 
-
-const handleImage = ()=>{
-  const randomNumber =Math.floor(Math.random()*item.length); 
-const imageName= item[randomNumber].name;
-//console.log('imageName', imageName)
-  const imageUrl = item[randomNumber].url;
-//  console.log('imageUrl', imageUrl)
-  setImgs(imageUrl);
-  setImgName(imageName);
-}
-
-console.log('two')
+  // console.log("two");
   return (
-    <div className='condRendering'>
+    <div className="condRendering">
       <h1>This is Image generator</h1>
       <button onClick={handleImage}>Get new image</button>
       <img src={imgs} />
