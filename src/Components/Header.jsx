@@ -12,7 +12,7 @@ const Header = () => {
       </div>
       <div className="navSection">
         <ul className="listStyle">
-          <li>onlineStatus:{onlineStatus ? "✔" : "🔴"}</li>
+          {/* <li>onlineStatus:{onlineStatus ? "✔" : "🔴"}</li> */}
           <li>
             <Link to="/">Home</Link>
           </li>

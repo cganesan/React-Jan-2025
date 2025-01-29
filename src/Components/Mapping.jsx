@@ -1,9 +1,11 @@
-import React, { usestate } from "react";
+import React, { useState } from "react";
 import { Data } from "./Data";
 import PersonalInfo from "./PersonalInfo";
 import { healthRequired } from "./PersonalInfo";
 
 const Mapping = () => {
+  const [searchText, setSearchText] = useState(null);
+  const [filteredInfo, setFilteredInfo] = useState(Data);
   // const info = Data.map((item) => {
   //   //  console.log("mapItem", item);
   //   const { name, age, place, stats, id } = item;
@@ -48,6 +50,22 @@ const Mapping = () => {
 
   const CheckUp = healthRequired(PersonalInfo);
   console.log("checkup", CheckUp);
+
+  const handleChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  console.log("infodata", Data);
+  const handleSearchButton = () => {
+    const filteredData = Data.filter((D) => {
+      console.log("DDDD", D);
+      return D.name.toLowerCase().includes(searchText.toLowerCase());
+    });
+    setFilteredInfo(filteredData);
+  };
+
+  console.log("filteredinof", filteredInfo);
+
   return (
     <div>
       <h2>This is Mapping Example</h2>
@@ -93,9 +111,13 @@ const Mapping = () => {
       {/* ************* Mapping with SPREAD OPERATOR********** */}
 
       <h3>Mapping with SPREAD OPERATOR</h3>
+      <div className="searchBar">
+        <input type="text" value={searchText} onChange={handleChange} />
+        <button onClick={handleSearchButton}>Search</button>
+      </div>
+
       <div className="personalInfo">
-        {Data.map((item) => {
-          console.log("item", item);
+        {filteredInfo.map((item) => {
           return (
             <div key={item.id} className="condRendering">
               {item.checkUp ? (
